@@ -1,7 +1,22 @@
-export default function Home() {
+import { GetStaticProps } from 'next';
+
+type Episode = {
+  id: string;
+  title: string;
+  members: string;
+};
+
+type HomeProps = {
+  episodes: Episode[];
+};
+
+export default function Home(props: HomeProps) {
   return (
-    <h1>Index</h1>
-  )
+    <div>
+      <h1>Index</h1>
+      <p>{JSON.stringify(props.episodes)}</p>
+    </div>
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
