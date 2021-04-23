@@ -1,9 +1,12 @@
 import { parseISO, format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
+import Image from 'next/image';
+
 import { api } from '../../services/api';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
+
+import styles from './episode.module.scss';
 
 type Episode = {
   id: string;
@@ -22,7 +25,36 @@ type EpisodeProps = {
 };
 
 export default function Episode({ episode }: EpisodeProps) {
-  return <h2>{episode.title}</h2>;
+  return (
+    <div className={styles.episode}>
+      <div className={styles.thumbnailContainer}>
+        <button type="button">
+          <img src="/arrow-left.svg" alt="left" />
+        </button>
+        <Image
+          width={700}
+          height={160}
+          src={episode.thumbnail}
+          objectFit="cover"
+        ></Image>
+        <button type="button">
+          <img src="/play.svg" alt="Tocar episódio" />
+        </button>
+      </div>
+
+      <header>
+        <h1>{episode.title}</h1>
+        <span>{episode.members}</span>
+        <span>{episode.publishedAt}</span>
+        <span>{episode.durationAsString}</span>
+      </header>
+
+      <div
+        className={styles.description}
+        dangerouslySetInnerHTML={{ __html: episode.description }}
+      ></div>
+    </div>
+  );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
