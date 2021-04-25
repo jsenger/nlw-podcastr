@@ -20,11 +20,6 @@ export function Player() {
     });
   }
 
-  function handleSeek(amount: number) {
-    audioRef.current.currentTime = amount;
-    setProgress(amount);
-  }
-
   const {
     episodeList,
     currentEpisodeIndex,
@@ -37,6 +32,7 @@ export function Player() {
     toggleLoop,
     toggleShuffle,
     setPlayingState,
+    clearPlayerState,
     playNext,
     playPrevious,
   } = usePlayer();
@@ -49,6 +45,16 @@ export function Player() {
   }, [isPlaying]);
 
   const episode = episodeList[currentEpisodeIndex];
+
+  function handleSeek(amount: number) {
+    audioRef.current.currentTime = amount;
+    setProgress(amount);
+  }
+
+  function handleEpisodeEnded() {
+    if (hasNext) playNext();
+    else clearPlayerState();
+  }
 
   return (
     <div className={styles.playerContainer}>
@@ -100,6 +106,7 @@ export function Player() {
             ref={audioRef}
             autoPlay
             loop={isLooping}
+            onEnded={handleEpisodeEnded}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
             onLoadedMetadata={setupProgressListener}
