@@ -1,23 +1,23 @@
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
 
-import styles from './styles.module.scss';
-import { usePlayer } from '../../contexts/PlayerContext';
-import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
+import styles from './styles.module.scss'
+import { usePlayer } from '../../contexts/PlayerContext'
+import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString'
 
 export function Player() {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null)
 
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(0)
 
   function setupProgressListener() {
-    audioRef.current.currentTime = 0;
+    audioRef.current.currentTime = 0
 
     audioRef.current.addEventListener('timeupdate', () => {
-      setProgress(Math.floor(audioRef.current.currentTime));
-    });
+      setProgress(Math.floor(audioRef.current.currentTime))
+    })
   }
 
   const {
@@ -35,25 +35,25 @@ export function Player() {
     clearPlayerState,
     playNext,
     playPrevious,
-  } = usePlayer();
+  } = usePlayer()
 
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef.current) return
 
-    if (isPlaying) audioRef.current.play();
-    else audioRef.current.pause();
-  }, [isPlaying]);
+    if (isPlaying) audioRef.current.play()
+    else audioRef.current.pause()
+  }, [isPlaying])
 
-  const episode = episodeList[currentEpisodeIndex];
+  const episode = episodeList[currentEpisodeIndex]
 
   function handleSeek(amount: number) {
-    audioRef.current.currentTime = amount;
-    setProgress(amount);
+    audioRef.current.currentTime = amount
+    setProgress(amount)
   }
 
   function handleEpisodeEnded() {
-    if (hasNext) playNext();
-    else clearPlayerState();
+    if (hasNext) playNext()
+    else clearPlayerState()
   }
 
   return (
@@ -159,5 +159,5 @@ export function Player() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

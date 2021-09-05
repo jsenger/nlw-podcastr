@@ -60,7 +60,7 @@
         position: relative;
 
         &::before {
-          content: '';
+          content: "";
           width: 4px;
           height: 4px;
           border-radius: 2px;
@@ -75,8 +75,8 @@
   }
 
   .description {
-    margin-top:2rem;
-    line-height:1.675rem;
+    margin-top: 2rem;
+    line-height: 1.675rem;
     color: var(--gray-800);
 
     p {

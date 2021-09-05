@@ -1,43 +1,43 @@
-import { GetStaticProps } from 'next';
-import Image from 'next/image';
-import Head from 'next/head';
-import Link from 'next/link';
-import { format, parseISO } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
+import { GetStaticProps } from 'next'
+import Image from 'next/image'
+import Head from 'next/head'
+import Link from 'next/link'
+import { format, parseISO } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
-import { api } from '../services/api';
-import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';
+import { api } from '../services/api'
+import { convertDurationToTimeString } from '../utils/convertDurationToTimeString'
 
-import styles from './home.module.scss';
-import { usePlayer } from '../contexts/PlayerContext';
+import styles from './home.module.scss'
+import { usePlayer } from '../contexts/PlayerContext'
 
 type Episode = {
-  id: string;
-  title: string;
-  members: string;
-  thumbnail: string;
-  publishedAt: string;
-  duration: number;
-  durationAsString: string;
-  url: string;
-};
+  id: string
+  title: string
+  members: string
+  thumbnail: string
+  publishedAt: string
+  duration: number
+  durationAsString: string
+  url: string
+}
 
 type HomeProps = {
-  latestEpisodes: Episode[];
-  allEpisodes: Episode[];
-};
+  latestEpisodes: Episode[]
+  allEpisodes: Episode[]
+}
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
-  const { playList } = usePlayer();
+  const { playList } = usePlayer()
 
-  const episodeList = [...latestEpisodes, ...allEpisodes];
+  const episodeList = [...latestEpisodes, ...allEpisodes]
 
   return (
     <div className={styles.homepage}>
       <Head>
         <title>Home | Podcastr</title>
       </Head>
-      
+
       <section className={styles.latestEpisodes}>
         <h2>Últimos lançamentos</h2>
 
@@ -70,7 +70,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   />
                 </button>
               </li>
-            );
+            )
           })}
         </ul>
       </section>
@@ -121,13 +121,13 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                     </button>
                   </td>
                 </tr>
-              );
+              )
             })}
           </tbody>
         </table>
       </section>
     </div>
-  );
+  )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -137,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
       _sort: 'published_at',
       _order: 'desc',
     },
-  });
+  })
 
   const episodes = data.map(episode => {
     return {
@@ -153,11 +153,11 @@ export const getStaticProps: GetStaticProps = async () => {
         Number(episode.file.duration)
       ),
       url: episode.file.url,
-    };
-  });
+    }
+  })
 
-  const latestEpisodes = episodes.slice(0, 2);
-  const allEpisodes = episodes.slice(2, episodes.length);
+  const latestEpisodes = episodes.slice(0, 2)
+  const allEpisodes = episodes.slice(2, episodes.length)
 
   return {
     props: {
@@ -165,5 +165,5 @@ export const getStaticProps: GetStaticProps = async () => {
       allEpisodes,
     },
     revalidate: 60 * 60 * 8,
-  };
-};
+  }
+}
